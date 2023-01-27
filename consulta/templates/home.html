@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Estilo CSS -->
     <style>
         body {
             background-color: blue;
@@ -62,42 +64,66 @@
     <title>Consulta CEP</title>
 </head>
 <body>
+
+    <!-- Cabeçalho do Site -->
     <header>
-        <h1>Consulta Endereço viaCEP</h1>
+        <h1>Consulta de Endereço viaCEP</h1>
     </header>
+
+    <!-- Corpo do Site -->
     <section>
         <div>
+
+            <!-- Inserindo CEP -->
             <p>CEP:
                 <input type="number" name="CEP" id="CEP">
             </p>
+
+            <!-- Botão para ação -->
             <p>
                 <input type="button" value="Consultar" id="button" onclick="ConsultarEndereco()">
             </p>
         </div>
+
+        <!-- Campo para exibir as Informações -->
         <div id="res">
             
         </div>
+
+        <!-- JavaScript -->
         <script>
+
+            // Requisitando a API 
             function ConsultarEndereco() {
+                // Armazenando o CEP do campo 'CEP' na variável 'cep'
                 let cep = document.querySelector('#CEP').value;
 
+                // Verificando se o CEP é válido (Possuiu 8 dígitos)
                 if (cep.length !== 8) {
                     alert('CEP Inválido')
                     return
                 }
 
+                // Armazenando a url da API com o valor do CEP
                 let url = `https://viacep.com.br/ws/${cep}/json/`
 
+                // Requisitando a API 
                 fetch(url).then(function(response) {
+                    // Transfromando a resposta para o formaro Json e Chamando a função 'mostrarEndereco' em seguida 
                     response.json().then(mostrarEndereco)
                 })
             }
 
+            // Exibindo os valores
             function mostrarEndereco(dados) {
+                // Armazenando o campo 'res' na variável 'resultado'
                 let resultado = document.querySelector('#res')
+
+                // Tratando erros
                 if (dados.erro) {
                     resultado.innerHTML = 'Não foi possível encontrar o endereço!'
                 } else {
+                    // Exibindo o resultado no campo 'res'
                     resultado.innerHTML = `<P>Endereço: ${dados.logradouro}</p>
                                            <p>Complemento: ${dados.complemento}</p>
                                            <p>Bairro: ${dados.bairro}</p>
